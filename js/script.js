@@ -8,7 +8,7 @@ const menuToggle = document.getElementById('menuToggle');
 const navMenu = document.getElementById('navMenu');
 const navLinks = document.querySelectorAll('.nav-link');
 const particlesContainer = document.getElementById('particles');
-const scrollRevealElements = document.querySelectorAll('.feature-item, .team-card');
+const scrollRevealElements = document.querySelectorAll('.feature-item, .team-card, .metodologia-item, .result-card');
 
 // ========== HEADER SCROLL EFFECT ==========
 /**
@@ -393,3 +393,53 @@ window.addEventListener('error', (event) => {
 });
 
 // ========== FIN DEL SCRIPT ==========
+
+// ========== LIGHTBOX MODAL ==========
+const modal = document.getElementById('mediaModal');
+if (modal) {
+    const modalImg = document.getElementById('modalImage');
+    const modalVid = document.getElementById('modalVideo');
+    const modalClose = document.getElementById('modalClose');
+
+    // Imágenes de Evidencia
+    document.querySelectorAll('.evidencia-item').forEach(item => {
+        item.addEventListener('click', function() {
+            const img = this.querySelector('img');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+            modalImg.src = img.src;
+            modalImg.style.display = 'block';
+            modalVid.style.display = 'none';
+        });
+    });
+
+    // Video local de Evidencia
+    const localVidWrapper = document.querySelector('.local-video-thumb');
+    if(localVidWrapper){
+        localVidWrapper.addEventListener('click', function() {
+            const videoSrc = this.getAttribute('data-src');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+            modalVid.src = videoSrc;
+            modalVid.style.display = 'block';
+            modalImg.style.display = 'none';
+            modalVid.play();
+        });
+    }
+
+    // Funciones para cerrar
+    function closeModal() {
+        modal.classList.remove('show');
+        modalVid.pause();
+        setTimeout(() => {
+            modal.style.display = 'none';
+            
+            
+        }, 300);
+    }
+
+    modalClose.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if(e.target === modal) closeModal();
+    });
+}

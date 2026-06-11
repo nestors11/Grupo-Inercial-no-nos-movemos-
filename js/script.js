@@ -394,52 +394,109 @@ window.addEventListener('error', (event) => {
 
 // ========== FIN DEL SCRIPT ==========
 
-// ========== LIGHTBOX MODAL ==========
+// ========== MEDIA MODAL (LIGHTBOX) ==========
 const modal = document.getElementById('mediaModal');
-if (modal) {
-    const modalImg = document.getElementById('modalImage');
-    const modalVid = document.getElementById('modalVideo');
-    const modalClose = document.getElementById('modalClose');
+const modalImg = document.getElementById('modalImage');
+const modalVid = document.getElementById('modalVideo');
+const modalYoutube = document.getElementById('modalYoutubeContainer');
+const modalClose = document.getElementById('modalClose');
+const modalCaption = document.getElementById('modalCaption');
 
-    // Imágenes de Evidencia
-    document.querySelectorAll('.evidencia-item').forEach(item => {
-        item.addEventListener('click', function() {
-            const img = this.querySelector('img');
-            modal.style.display = 'flex';
-            setTimeout(() => modal.classList.add('show'), 10);
-            modalImg.src = img.src;
-            modalImg.style.display = 'block';
-            modalVid.style.display = 'none';
-        });
+/**
+ * Abre el modal con el contenido específico
+ */
+function openModal(type, src, caption = '') {
+    if (!modal) return;
+
+    // Reset visibility
+    modalImg.style.display = 'none';
+    modalVid.style.display = 'none';
+    modalYoutube.style.display = 'none';
+    modalYoutube.innerHTML = ''; // Limpiar YouTube
+    modalVid.pause();
+    modalVid.src = '';
+    
+    modalCaption.textContent = caption;
+
+    if (type === 'image') {
+        modalImg.src = src;
+        modalImg.style.display = 'block';
+    } else if (type === 'video') {
+        modalVid.src = src;
+        modalVid.style.display = 'block';
+        modalVid.play();
+    } else if (type === 'youtube') {
+        const origin = window.location.origin === 'null' ? '' : `&origin=${window.location.origin}`;
+        modalYoutube.innerHTML = `<iframe 
+            src="https://www.youtube-nocookie.com/embed/${src}?autoplay=1${origin}" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen
+            referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+        modalYoutube.style.display = 'block';
+    }
+
+    modal.style.display = 'flex';
+    setTimeout(() => {
+        modal.classList.add('show');
+    }, 10);
+}
+
+/**
+ * Cierra el modal
+ */
+function closeModal() {
+    if (!modal) return;
+    
+    modal.classList.remove('show');
+    modalVid.pause();
+    
+    setTimeout(() => {
+        modal.style.display = 'none';
+        modalYoutube.innerHTML = ''; // Detener YouTube
+        modalVid.src = '';
+    }, 300);
+}
+
+// Event Listeners para el Modal
+if (modal) {
+    // Cerrar con botón
+    modalClose.addEventListener('click', closeModal);
+
+    // Cerrar al hacer click fuera del contenido
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
     });
 
-    // Video local de Evidencia
-    const localVidWrapper = document.querySelector('.local-video-thumb');
-    if(localVidWrapper){
-        localVidWrapper.addEventListener('click', function() {
-            const videoSrc = this.getAttribute('data-src');
-            modal.style.display = 'flex';
-            setTimeout(() => modal.classList.add('show'), 10);
-            modalVid.src = videoSrc;
-            modalVid.style.display = 'block';
-            modalImg.style.display = 'none';
-            modalVid.play();
-        });
-    }
+    // Cerrar con tecla ESC
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('show')) {
+            closeModal();
+        }
+    });
 
-    // Funciones para cerrar
-    function closeModal() {
-        modal.classList.remove('show');
-        modalVid.pause();
-        setTimeout(() => {
-            modal.style.display = 'none';
-            
-            
-        }, 300);
-    }
+    // Delegación de eventos para elementos clickables
+    document.addEventListener('click', (e) => {
+        const target = e.target.closest('.clickable-media');
+        if (!target) return;
 
-    modalClose.addEventListener('click', closeModal);
-    modal.addEventListener('click', (e) => {
-        if(e.target === modal) closeModal();
+        e.preventDefault();
+        const type = target.getAttribute('data-type');
+        const src = target.getAttribute('data-src');
+        
+        let caption = '';
+        if (type === 'image') {
+            const img = target.querySelector('img');
+            src_val = img ? img.src : src;
+            const captionElement = target.querySelector('.evidencia-caption') || target.querySelector('.team-member-name');
+            caption = captionElement ? captionElement.innerText.replace(/\n/g, ' ') : '';
+            openModal(type, src_val, caption);
+        } else {
+            // Video o YouTube
+            const h3 = target.closest('section')?.querySelector('h3');
+            caption = h3 ? h3.innerText : '';
+            openModal(type, src, caption);
+        }
     });
 }
+

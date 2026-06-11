@@ -13,6 +13,9 @@
     
     <!-- Estilos -->
     <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- Referrer Policy for YouTube Embeds -->
+    <meta name="referrer" content="strict-origin-when-cross-origin">
 </head>
 <body>
     <!-- ==================== HEADER ==================== -->
@@ -226,19 +229,19 @@
             </div>
 
             <div class="evidencia-grid">
-                <div class="evidencia-item">
+                <div class="evidencia-item clickable-media" data-type="image">
                     <img src="assets/1magen de montaje.jpeg" alt="Montaje del cohete 1">
                     <div class="evidencia-caption">Fase Inicial de Montaje</div>
                 </div>
-                <div class="evidencia-item">
+                <div class="evidencia-item clickable-media" data-type="image">
                     <img src="assets/2 montaje.jpeg" alt="Montaje del cohete 2">
                     <div class="evidencia-caption">Primera fase del cohete</div>
                 </div>
-                <div class="evidencia-item">
+                <div class="evidencia-item clickable-media" data-type="image">
                     <img src="assets/31magen de montaje.jpeg" alt="Montaje del cohete 3">
                     <div class="evidencia-caption">Segunda fase del cohete</div>
                 </div>
-                <div class="evidencia-item">
+                <div class="evidencia-item clickable-media" data-type="image">
                     <img src="assets/montaje final.jpeg" alt="Montaje final">
                     <div class="evidencia-caption">Cohete Listo para Lanzamiento</div>
                 </div>
@@ -246,8 +249,11 @@
 
             <div class="video-resultado">
                 <h3>Resultado Final del Experimento</h3>
-                <div class="local-video-wrapper">
-                    <video controls src="assets/VIdeo resultado final experimento.mp4" class="local-video"></video>
+                <div class="video-thumb-container clickable-media" data-type="video" data-src="assets/VIdeo resultado final experimento.mp4">
+                    <div class="play-overlay">
+                        <div class="play-button-icon">▶</div>
+                    </div>
+                    <video src="assets/VIdeo resultado final experimento.mp4" class="local-video-preview"></video>
                 </div>
                 <p class="video-description">Registro del vuelo exitoso donde se observa la trayectoria y el alcance logrado.</p>
             </div>
@@ -264,7 +270,7 @@
 
             <div class="team-grid">
                 <!-- Card 1: Jacel Thomas -->
-                <article class="team-card" data-role="executive">
+                <article class="team-card clickable-media" data-role="executive" data-type="image">
                     <div class="card-background"></div>
                     <div class="card-image">
                         <img src="assets/Jacel Thomas Enciso Pinzon.jpeg" alt="Jacel Thomas Enciso Pinzón">
@@ -281,7 +287,7 @@
                 </article>
 
                 <!-- Card 2: Byron Daniel -->
-                <article class="team-card" data-role="scientific">
+                <article class="team-card clickable-media" data-role="scientific" data-type="image">
                     <div class="card-background"></div>
                     <div class="card-image">
                         <img src="assets/Byron Daniel Giraldo Castro.jpeg" alt="Byron Daniel Giraldo Castro">
@@ -298,7 +304,7 @@
                 </article>
 
                 <!-- Card 3: Duban Antonio -->
-                <article class="team-card" data-role="creative">
+                <article class="team-card clickable-media" data-role="creative" data-type="image">
                     <div class="card-background"></div>
                     <div class="card-image">
                         <img src="assets/Duban Antonio Martinez Pajajoy.jpeg" alt="Duban Antonio Martinez Pajajoy">
@@ -315,7 +321,7 @@
                 </article>
 
                 <!-- Card 4: Juan David -->
-                <article class="team-card" data-role="financial">
+                <article class="team-card clickable-media" data-role="financial" data-type="image">
                     <div class="card-background"></div>
                     <div class="card-image">
                         <img src="assets/Juan David Mendieta Cortés.png" alt="Juan David Mendieta Cortes">
@@ -332,7 +338,7 @@
                 </article>
 
                 <!-- Card 5: Nestor Steven -->
-                <article class="team-card" data-role="creative">
+                <article class="team-card clickable-media" data-role="creative" data-type="image">
                     <div class="card-background"></div>
                     <div class="card-image">
                         <img src="assets/Nestor Steven Piraquive Garzon.jpeg" alt="Néstor Steven Piraquive Garzón">
@@ -360,8 +366,11 @@
             </div>
 
             <div class="recursos-container">
-                <div class="video-wrapper">
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/EiLn7TVITSk?si=hSvdpkR_ys_qHcW-" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <div class="video-thumb-container clickable-media" data-type="youtube" data-src="EiLn7TVITSk">
+                    <div class="play-overlay">
+                        <div class="play-button-icon">▶</div>
+                    </div>
+                    <img src="https://img.youtube.com/vi/EiLn7TVITSk/maxresdefault.jpg" alt="YouTube Video Thumbnail" class="youtube-thumb">
                 </div>
                 
                 <div class="document-link">
@@ -397,6 +406,17 @@
             </div>
         </div>
     </footer>
+
+    <!-- ==================== MEDIA MODAL ==================== -->
+    <div id="mediaModal" class="modal">
+        <span id="modalClose" class="modal-close">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" class="modal-media" src="" alt="Vista ampliada">
+            <video id="modalVideo" class="modal-media" controls src=""></video>
+            <div id="modalYoutubeContainer" class="modal-media"></div>
+        </div>
+        <div id="modalCaption" class="modal-caption"></div>
+    </div>
 
     <!-- Scripts -->
     <script src="js/script.js"></script>
